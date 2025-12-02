@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ccc" />
+    </marker>
+  </defs>
+
   <!-- Background -->
   <rect width="1200" height="800" fill="#ffffff"/>
 
@@ -75,7 +82,7 @@
   <g transform="translate(350, 550)">
     <rect width="180" height="100" rx="10" fill="white" stroke="#ee5a6f" stroke-width="2"/>
     <text x="90" y="40" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">Redis</text>
-    <text x="90" y="65" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#666">Cache & Broker</text>
+    <text x="90" y="65" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#666">Cache &amp; Broker</text>
     <text x="90" y="85" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#999">Port: 6380</text>
   </g>
 
@@ -96,12 +103,6 @@
   </g>
 
   <!-- Connections -->
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#ccc" />
-    </marker>
-  </defs>
-  
   <path d="M 190 200 L 190 550" stroke="#ccc" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
   <path d="M 440 200 L 440 330" stroke="#ccc" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
   <path d="M 440 200 L 190 550" stroke="#ccc" stroke-width="2" fill="none" stroke-dasharray="5,5"/>

@@ -15,8 +15,11 @@ config/*.env
 # ----------------------------------------------------------------------------
 # Data Directories (Persistent volumes)
 # ----------------------------------------------------------------------------
-data/
-postgres-data/
+# Data Directories (Persistent volumes)
+# ----------------------------------------------------------------------------
+data/**/*
+postgres-data/**/*
+!**/.gitkeep
 *.db
 *.sqlite
 *.sqlite3

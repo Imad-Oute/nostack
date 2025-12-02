@@ -5,11 +5,12 @@ A comprehensive, production-ready Docker-based development stack for building AI
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Quick Start](#quick-start)
+- [What's included in the stack](#whats-included-in-the-stack)
 - [Design Philosophy](#-design-philosophy)
 - [Architecture](#architecture)
 - [Services Included](#services-included)
 - [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
 - [Service Access](#service-access)
 - [Configuration](#configuration)
 - [Database Management](#database-management)
@@ -17,36 +18,6 @@ A comprehensive, production-ready Docker-based development stack for building AI
 - [Troubleshooting](#troubleshooting)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
-
-## 📂 Folder Structure
-
-```
-ai-dev-stack/
-├── config/                 # Configuration files for services
-│   ├── init-db.sh          # Database initialization script
-│   ├── langflow.env        # Langflow environment variables
-│   ├── neo4j.conf          # Neo4j configuration
-│   ├── openwebui.env       # OpenWebUI environment variables
-│   ├── qdrant.yml          # Qdrant configuration
-│   └── zep.yaml            # Zep configuration
-├── data/                   # Persistent data storage for services
-│   ├── flowise/            # Flowise data
-│   ├── langflow/           # Langflow data
-│   ├── n8n/                # n8n data
-│   ├── neo4j/              # Neo4j data
-│   ├── qdrant/             # Qdrant data
-│   ├── redis/              # Redis data
-│   └── zep-nlp/            # Zep NLP cache
-├── docs/                   # Documentation files
-│   ├── architecture.svg    # Architecture diagram
-│   └── ...                 # Other documentation
-├── postgres-data/          # PostgreSQL data storage
-├── services/               # Source code for custom services
-│   └── openwebui-backend/  # OpenWebUI backend source
-├── .env.example            # Example environment variables
-├── docker-compose.yml      # Main Docker Compose file
-└── README.md               # Project documentation
-```
 
 ## 🎯 Overview
 
@@ -61,6 +32,91 @@ This stack provides a complete AI development environment with:
 - **UI Framework**: OpenWebUI backend for chat interfaces
 
 All services are containerized, networked, and configured to work together seamlessly.
+
+## 🚀 Quick Start
+
+### Option 1: Automated Setup (Recommended)
+
+We have included a setup script to get you up and running in seconds.
+
+1.  **Clone the repository**:
+    ```bash
+    git clone <your-repo-url>
+    cd ai-dev-stack
+    ```
+
+2.  **Configure Environment**:
+    ```bash
+    cp .env.example .env
+    # Edit .env with your preferred settings (optional but recommended)
+    nano .env
+    ```
+
+3.  **Run the setup script**:
+    ```bash
+    python3 setup.py
+    ```
+    This script will check your prerequisites and start the entire stack.
+
+### Option 2: Manual Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd ai-dev-stack
+```
+
+### 2. Configure Environment Variables
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env with your preferred settings
+nano .env  # or use your favorite editor
+```
+
+### 3. Start the Stack
+
+```bash
+# Start all services
+docker compose up -d
+
+# Check service status
+docker compose ps
+
+# View logs
+docker compose logs -f
+```
+
+### 4. Verify Installation
+
+```bash
+# Check all containers are running
+docker ps --filter "name=ai-"
+
+# Test service health
+curl http://localhost:7860/  # Langflow
+curl http://localhost:3002/  # Flowise
+curl http://localhost:5679/  # n8n
+```
+
+## 📦 What's included in the stack
+
+The core stack (this repo) includes the most powerful & easy to to use open source AI agent services. The services are pre-configured and ready to use. Networking, storage, and other docker related headaches are handled for you. Just run the stack and start building AI agents.
+
+| Tool | Description |
+| :--- | :--- |
+| **n8n** | Low-code automation platform with over 400 integrations and advanced AI components. |
+| **Flowise** | No/low code AI agent builder, pairs very well with n8n. |
+| **Langflow** | Visual framework for building multi-agent AI applications and LLM flows. |
+| **OpenWebUI** | ChatGPT-like interface to privately interact with your local models and agents. |
+| **Zep** | Long-term memory service for AI assistants, enabling personalized AI experiences. |
+| **Qdrant** | Open-source, high performance vector store. Included to experiment with different vector stores. |
+| **Neo4j** | Graph database for building knowledge graphs and modeling complex relationships. |
+| **PostgreSQL** | Robust relational database with `pgvector` extension for vector similarity search. |
+| **Redis** | High-performance in-memory data store used for caching and message brokering. |
 
 ## 🧠 Design Philosophy
 
@@ -160,48 +216,35 @@ This gives you full transparency over how each service is wired.
 - **Ports**: Ensure the following ports are available:
   - 3002, 3005, 5435, 5555, 5679, 6334, 6380, 7475, 7688, 7860, 8002, 8081
 
-## 🚀 Quick Start
+## � Folder Structure
 
-### 1. Clone the Repository
-
-```bash
-git clone <your-repo-url>
-cd ai-dev-stack
 ```
-
-### 2. Configure Environment Variables
-
-```bash
-# Copy the example environment file
-cp .env.example .env
-
-# Edit .env with your preferred settings
-nano .env  # or use your favorite editor
-```
-
-### 3. Start the Stack
-
-```bash
-# Start all services
-docker compose up -d
-
-# Check service status
-docker compose ps
-
-# View logs
-docker compose logs -f
-```
-
-### 4. Verify Installation
-
-```bash
-# Check all containers are running
-docker ps --filter "name=ai-"
-
-# Test service health
-curl http://localhost:7860/  # Langflow
-curl http://localhost:3002/  # Flowise
-curl http://localhost:5679/  # n8n
+ai-dev-stack/
+├── config/                 # Configuration files for services
+│   ├── init-db.sh          # Database initialization script
+│   ├── langflow.env        # Langflow environment variables
+│   ├── neo4j.conf          # Neo4j configuration
+│   ├── openwebui.env       # OpenWebUI environment variables
+│   ├── qdrant.yml          # Qdrant configuration
+│   └── zep.yaml            # Zep configuration
+├── data/                   # Persistent data storage for services
+│   ├── flowise/            # Flowise data
+│   ├── langflow/           # Langflow data
+│   ├── n8n/                # n8n data
+│   ├── neo4j/              # Neo4j data
+│   ├── qdrant/             # Qdrant data
+│   ├── redis/              # Redis data
+│   └── zep-nlp/            # Zep NLP cache
+├── docs/                   # Documentation files
+│   ├── architecture.svg    # Architecture diagram
+│   └── ...                 # Other documentation
+├── postgres-data/          # PostgreSQL data storage
+├── services/               # Source code for custom services
+│   └── openwebui-backend/  # OpenWebUI backend source
+├── .env.example            # Example environment variables
+├── docker-compose.yml      # Main Docker Compose file
+├── setup.py                # Automated setup script
+└── README.md               # Project documentation
 ```
 
 ## 🌐 Service Access

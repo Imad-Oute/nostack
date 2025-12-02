@@ -5,68 +5,122 @@ import sys
 import shutil
 import time
 
-def print_color(text, color="green"):
-    colors = {
-        "green": "\033[92m",
-        "red": "\033[91m",
-        "yellow": "\033[93m",
-        "blue": "\033[94m",
-        "reset": "\033[0m"
-    }
-    print(f"{colors.get(color, '')}{text}{colors['reset']}")
+# --- Configuration ---
+REQUIRED_COMMANDS = ["docker", "git"]
+ENV_EXAMPLE_FILE = ".env.example"
+ENV_FILE = ".env"
+OPENWEBUI_DIR = "services/openwebui-backend"
+DEFAULT_OPENWEBUI_REPO = "https://github.com/open-webui/open-webui.git"
 
-def check_command(command):
-    return shutil.which(command) is not None
+# --- Colors ---
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
 
-def run_command(command, shell=False):
-    try:
-        subprocess.check_call(command, shell=shell)
-        return True
-    except subprocess.CalledProcessError:
-        return False
+def print_step(msg):
+    print(f"\n{Colors.BLUE}{Colors.BOLD}[STEP] {msg}{Colors.ENDC}")
 
-def main():
-    print_color("\n🚀 Starting AI Development Stack Setup...\n", "blue")
+def print_success(msg):
+    print(f"{Colors.GREEN}✅ {msg}{Colors.ENDC}")
 
-    # 1. Check Prerequisites
-    print_color("Checking prerequisites...", "yellow")
-    if not check_command("docker"):
-        print_color("❌ Docker is not installed. Please install Docker first.", "red")
+def print_warning(msg):
+    print(f"{Colors.WARNING}⚠️  {msg}{Colors.ENDC}")
+
+def print_error(msg):
+    print(f"{Colors.FAIL}❌ {msg}{Colors.ENDC}")
+
+def check_prerequisites():
+    print_step("Checking Prerequisites")
+    missing = []
+    for cmd in REQUIRED_COMMANDS:
+        if shutil.which(cmd) is None:
+            missing.append(cmd)
+    
+    if missing:
+        print_error(f"Missing required tools: {', '.join(missing)}")
+        print("Please install them and try again.")
         sys.exit(1)
     
-    # Check for docker compose (v2) or docker-compose (v1)
-    docker_compose_cmd = "docker compose"
-    if not run_command(["docker", "compose", "version"], shell=False):
-        if check_command("docker-compose"):
-            docker_compose_cmd = "docker-compose"
-        else:
-            print_color("❌ Docker Compose is not installed.", "red")
-            sys.exit(1)
-            
-    print_color("✅ Prerequisites checked.", "green")
+    # Check Docker Compose
+    if subprocess.call(["docker", "compose", "version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) != 0:
+        if subprocess.call(["docker-compose", "version"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) != 0:
+             print_error("Docker Compose plugin not found.")
+             sys.exit(1)
 
-    # 2. Setup Environment Variables
-    print_color("\nSetting up environment variables...", "yellow")
-    if not os.path.exists(".env"):
-        if os.path.exists(".env.example"):
-            shutil.copy(".env.example", ".env")
-            print_color("✅ Created .env from .env.example", "green")
+    print_success("All prerequisites met.")
+
+def setup_env():
+    print_step("Setting up Environment Variables")
+    if not os.path.exists(ENV_FILE):
+        if os.path.exists(ENV_EXAMPLE_FILE):
+            shutil.copy(ENV_EXAMPLE_FILE, ENV_FILE)
+            print_success(f"Created {ENV_FILE} from {ENV_EXAMPLE_FILE}")
+            print_warning(f"Please review {ENV_FILE} and update secrets/URLs before running the stack.")
         else:
-            print_color("❌ .env.example not found!", "red")
+            print_error(f"{ENV_EXAMPLE_FILE} not found!")
             sys.exit(1)
     else:
-        print_color("ℹ️  .env already exists, skipping creation.", "blue")
+        print_success(f"{ENV_FILE} already exists.")
 
-    # 3. Start Services
-    print_color("\nStarting services (this may take a while)...", "yellow")
-    if run_command(f"{docker_compose_cmd} up -d", shell=True):
-        print_color("\n✅ Stack started successfully!", "green")
-    else:
-        print_color("\n❌ Failed to start stack.", "red")
+    # Basic validation
+    with open(ENV_FILE, 'r') as f:
+        content = f.read()
+        if "your-domain.ngrok-free.dev" in content:
+            print_warning("It looks like you haven't configured your Ngrok domain in .env yet.")
+            print_warning("n8n webhooks might not work correctly.")
+
+def setup_openwebui():
+    print_step("Setting up OpenWebUI")
+    
+    # Get repo URL from .env or default
+    repo_url = DEFAULT_OPENWEBUI_REPO
+    if os.path.exists(ENV_FILE):
+        with open(ENV_FILE, 'r') as f:
+            for line in f:
+                if line.startswith("OPENWEBUI_REPO_URL="):
+                    repo_url = line.strip().split("=", 1)[1]
+                    break
+    
+    target_dir = os.path.abspath(OPENWEBUI_DIR)
+    backend_dir = os.path.join(target_dir, "backend")
+
+    if os.path.exists(backend_dir):
+        print_success("OpenWebUI seems to be already set up.")
+        return
+
+    print(f"Cloning OpenWebUI from {repo_url}...")
+    
+    # Ensure directory exists
+    os.makedirs(target_dir, exist_ok=True)
+    
+    try:
+        # Clone into a temporary directory first or directly if empty
+        # We use '.' to clone into the existing directory
+        subprocess.check_call(["git", "clone", repo_url, "."], cwd=target_dir)
+        print_success("OpenWebUI cloned successfully.")
+    except subprocess.CalledProcessError:
+        print_error("Failed to clone OpenWebUI.")
         sys.exit(1)
 
-    # 4. Display Info
-    print_color("\n🎉 Setup Complete! Here are your services:\n", "green")
+def start_stack():
+    print_step("Starting the Stack")
+    print("This might take a while to download images and build containers...")
+    
+    cmd = "docker compose up -d"
+    if subprocess.call(cmd, shell=True) == 0:
+        print_success("Stack started successfully!")
+    else:
+        print_error("Failed to start the stack.")
+        sys.exit(1)
+
+def print_summary():
+    print(f"\n{Colors.HEADER}{Colors.BOLD}🎉 NoStack Setup Complete!{Colors.ENDC}\n")
     
     services = [
         ("n8n", "http://localhost:5679", "Workflow Automation"),
@@ -81,9 +135,18 @@ def main():
     print(f"{'Service':<20} {'URL':<40} {'Description'}")
     print("-" * 80)
     for name, url, desc in services:
-        print(f"{name:<20} {url:<40} {desc}")
+        print(f"{Colors.CYAN}{name:<20}{Colors.ENDC} {url:<40} {desc}")
     
-    print_color("\nℹ️  To stop the stack, run: docker compose down", "blue")
+    print(f"\n{Colors.BLUE}ℹ️  To stop the stack, run: docker compose down{Colors.ENDC}")
+
+def main():
+    print(f"{Colors.HEADER}{Colors.BOLD}🚀 Initializing NoStack Setup...{Colors.ENDC}")
+    
+    check_prerequisites()
+    setup_env()
+    setup_openwebui()
+    start_stack()
+    print_summary()
 
 if __name__ == "__main__":
     main()

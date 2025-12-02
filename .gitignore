@@ -23,7 +23,7 @@ postgres-data/*
 
 # But keep the directories themselves (and .gitkeep files)
 !data/**/.gitkeep
-!postgres-data/**/.gitkeep
+!postgres-data/.gitkeep
 *.db
 *.sqlite
 *.sqlite3

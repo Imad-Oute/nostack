@@ -193,8 +193,8 @@ services:
       - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
       - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
       # --- ADD NGROK CONFIGURATION HERE ---
-      - N8N_EDITOR_BASE_URL=https://stutterinfady-unneat-delcie.ngrok-free.dev # Change this your Ngrok domain URL
-      - WEBHOOK_URL=https://stutterinfady-unneat-delcie.ngrok-free.dev # Change this with your Ngrok domain URL
+      - N8N_EDITOR_BASE_URL=${N8N_EDITOR_BASE_URL} # Change this your Ngrok domain URL
+      - WEBHOOK_URL=${WEBHOOK_URL} # Change this with your Ngrok domain URL
       - N8N_EXPRESS_TRUST_PROXY=true
     volumes:
       - ./data/n8n:/home/node/.n8n

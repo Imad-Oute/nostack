@@ -5,33 +5,33 @@ This directory contains comprehensive technical documentation for all services i
 ## Service Documentation
 
 ### Workflow & Automation
-- **[n8n](n8n.md)** - Workflow automation platform with 400+ integrations
-- **[Flowise](flowise.md)** - No/low-code AI agent builder
-- **[Langflow](langflow.md)** - Visual framework for multi-agent AI applications
+- **[n8n](Services%20docs/n8n.md)** - Workflow automation platform with 400+ integrations
+- **[Flowise](Services%20docs/flowise.md)** - No/low-code AI agent builder
+- **[Langflow](Services%20docs/langflow.md)** - Visual framework for multi-agent AI applications
 
 ### Memory & Storage
-- **[Zep](zep.md)** - Long-term memory for AI assistants
+- **[Zep](Services%20docs/zep.md)** - Long-term memory for AI assistants
   - Embedding Model: `all-MiniLM-L6-v2` (384 dimensions)
   - Local embeddings (no external API)
-- **[Qdrant](qdrant.md)** - High-performance vector database
+- **[Qdrant](Services%20docs/qdrant.md)** - High-performance vector database
   - Supports multiple embedding dimensions
   - REST API and gRPC
-- **[Neo4j](neo4j.md)** - Graph database for knowledge graphs
+- **[Neo4j](Services%20docs/neo4j.md)** - Graph database for knowledge graphs
   - Cypher query language
   - Ideal for complex relationships
 
 ### Databases
-- **[PostgreSQL](postgresql.md)** - Relational database with pgvector
+- **[PostgreSQL](Services%20docs/postgresql.md)** - Relational database with pgvector
   - Supports vector similarity search
   - Used by: n8n, Flowise, Langflow, Zep, OpenWebUI
-- **[Redis](redis.md)** - In-memory data store
+- **[Redis](Services%20docs/redis.md)** - In-memory data store
   - Caching and session management
   - Message brokering
 
 ## Architecture Documentation
 - **[Stack Infrastructure](Stack-Infrastructure.md)** - Complete architecture overview
-- **[OpenWebUI Development](openwebui-development.md)** - Development setup guide
-- **[Service Access](service-access.md)** - URLs and connection details
+- **[OpenWebUI Development](Services%20docs/openwebui-development.md)** - Development setup guide
+
 
 ## Quick Reference
 
@@ -53,8 +53,8 @@ This directory contains comprehensive technical documentation for all services i
 | Qdrant Dashboard | http://localhost:6334/dashboard | Vector DB GUI |
 | Neo4j Browser | http://localhost:7474 | Graph database UI |
 | Redis Commander | http://localhost:8081 | Redis GUI |
-| PostgreSQL | localhost:5432 | Database |
-| Redis | localhost:6379 | Cache/Queue |
+| PostgreSQL | http://localhost:5432 | Database |
+| Redis | http://localhost:6379 | Cache/Queue |
 | Zep | http://localhost:8000 | Memory API |
 
 ### Database Credentials

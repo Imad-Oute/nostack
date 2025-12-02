@@ -150,15 +150,15 @@ graph TB
     ZEP --> ZEPNLP
     REDIS --> REDISCMD
     
-    style N8N fill:#ff6b6b
-    style FLOWISE fill:#4ecdc4
-    style LANGFLOW fill:#95e1d3
-    style OPENWEBUI fill:#f38181
-    style ZEP fill:#aa96da
-    style POSTGRES fill:#5f27cd
-    style REDIS fill:#ee5a6f
-    style QDRANT fill:#48dbfb
-    style NEO4J fill:#00d2d3
+    style N8N fill:#ff655a
+    style FLOWISE fill:#6544fc
+    style LANGFLOW fill:#ec4899
+    style OPENWEBUI fill:#f9fafb
+    style ZEP fill:#7f26d9
+    style POSTGRES fill:#336791
+    style REDIS fill:#dc382d
+    style QDRANT fill:#d51b3f
+    style NEO4J fill:#018bff
 ```
 
 ## 🛠️ Services Included

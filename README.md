@@ -1,4 +1,4 @@
-# 🚀 AI Development Stack
+# 🚀 NoStack: AI Development Stack
 
 A comprehensive, production-ready Docker-based development stack for building AI-powered applications. This stack integrates multiple AI/ML tools, workflow automation, vector databases, and memory systems into a unified development environment.
 
@@ -8,15 +8,15 @@ The core stack (this repo) includes the most powerful & easy to to use open sour
 
 | Tool | Description |
 | :--- | :--- |
-| **n8n** | Low-code automation platform with over 400 integrations and advanced AI components. |
-| **Flowise** | No/low code AI agent builder, pairs very well with n8n. |
-| **Langflow** | Visual framework for building multi-agent AI applications and LLM flows. |
-| **OpenWebUI** | ChatGPT-like interface to privately interact with your local models and agents. |
-| **Zep** | Long-term memory service for AI assistants, enabling personalized AI experiences. |
-| **Qdrant** | Open-source, high performance vector store. Included to experiment with different vector stores. |
-| **Neo4j** | Graph database for building knowledge graphs and modeling complex relationships. |
-| **PostgreSQL** | Robust relational database with `pgvector` extension for vector similarity search. |
-| **Redis** | High-performance in-memory data store used for caching and message brokering. |
+| **[n8n](https://n8n.io/)** | Low-code automation platform with over 400 integrations and advanced AI components. |
+| **[Flowise](https://flowiseai.com/)** | No/low code AI agent builder, pairs very well with n8n. |
+| **[Langflow](https://www.langflow.org/)** | Visual framework for building multi-agent AI applications and LLM flows. |
+| **[OpenWebUI](https://openwebui.com/)** | ChatGPT-like interface to privately interact with your local models and agents. |
+| **[Zep](https://www.getzep.com/)** | Long-term memory service for AI assistants, enabling personalized AI experiences. |
+| **[Qdrant](https://qdrant.tech/)** | Open-source, high performance vector store. Included to experiment with different vector stores. |
+| **[Neo4j](https://neo4j.com/)** | Graph database for building knowledge graphs and modeling complex relationships. |
+| **[PostgreSQL](https://www.postgresql.org/)** | Robust relational database with `pgvector` extension for vector similarity search. |
+| **[Redis](https://redis.io/)** | High-performance in-memory data store used for caching and message brokering. |
 
 ## 🚀 Quick Start
 

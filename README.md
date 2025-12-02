@@ -115,51 +115,7 @@ This gives you full transparency over how each service is wired.
 
 ## 🏗️ Architecture
 
-```mermaid
-graph TB
-    subgraph "Application Layer"
-        N8N[n8n Workflows]
-        FLOWISE[Flowise AI]
-        LANGFLOW[Langflow]
-        OPENWEBUI[OpenWebUI Backend]
-    end
-    
-    subgraph "AI Services Layer"
-        ZEP[Zep Memory]
-        ZEPNLP[Zep NLP Server]
-    end
-    
-    subgraph "Data Layer"
-        POSTGRES[(PostgreSQL + pgvector)]
-        REDIS[(Redis Cache)]
-        QDRANT[(Qdrant Vector DB)]
-        NEO4J[(Neo4j Graph DB)]
-    end
-    
-    subgraph "Management Tools"
-        REDISCMD[Redis Commander]
-    end
-    
-    N8N --> POSTGRES
-    FLOWISE --> POSTGRES
-    FLOWISE --> QDRANT
-    LANGFLOW --> POSTGRES
-    OPENWEBUI --> POSTGRES
-    OPENWEBUI --> QDRANT
-    ZEP --> POSTGRES
-    ZEP --> ZEPNLP
-    REDIS --> REDISCMD
-    
-    style N8N fill:#ff655a
-    style FLOWISE fill:#6544fc
-    style LANGFLOW fill:#ec4899
-    style OPENWEBUI fill:#f9fafb
-    style ZEP fill:#7f26d9
-    style POSTGRES fill:#336791
-    style REDIS fill:#dc382d
-    style QDRANT fill:#d51b3f
-    style NEO4J fill:#018bff
-```
+![Architecture Diagram](docs/architecture.svg)
 
 ## 🛠️ Services Included
 

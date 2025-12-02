@@ -17,9 +17,13 @@ config/*.env
 # ----------------------------------------------------------------------------
 # Data Directories (Persistent volumes)
 # ----------------------------------------------------------------------------
-data/**/*
-postgres-data/**/*
-!**/.gitkeep
+# Ignore everything in data and postgres-data
+data/*
+postgres-data/*
+
+# But keep the directories themselves (and .gitkeep files)
+!data/**/.gitkeep
+!postgres-data/**/.gitkeep
 *.db
 *.sqlite
 *.sqlite3

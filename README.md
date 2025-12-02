@@ -5,6 +5,7 @@ A comprehensive, production-ready Docker-based development stack for building AI
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Design Philosophy](#-design-philosophy)
 - [Architecture](#architecture)
 - [Services Included](#services-included)
 - [Prerequisites](#prerequisites)
@@ -16,6 +17,36 @@ A comprehensive, production-ready Docker-based development stack for building AI
 - [Troubleshooting](#troubleshooting)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
+
+## 📂 Folder Structure
+
+```
+ai-dev-stack/
+├── config/                 # Configuration files for services
+│   ├── init-db.sh          # Database initialization script
+│   ├── langflow.env        # Langflow environment variables
+│   ├── neo4j.conf          # Neo4j configuration
+│   ├── openwebui.env       # OpenWebUI environment variables
+│   ├── qdrant.yml          # Qdrant configuration
+│   └── zep.yaml            # Zep configuration
+├── data/                   # Persistent data storage for services
+│   ├── flowise/            # Flowise data
+│   ├── langflow/           # Langflow data
+│   ├── n8n/                # n8n data
+│   ├── neo4j/              # Neo4j data
+│   ├── qdrant/             # Qdrant data
+│   ├── redis/              # Redis data
+│   └── zep-nlp/            # Zep NLP cache
+├── docs/                   # Documentation files
+│   ├── architecture.svg    # Architecture diagram
+│   └── ...                 # Other documentation
+├── postgres-data/          # PostgreSQL data storage
+├── services/               # Source code for custom services
+│   └── openwebui-backend/  # OpenWebUI backend source
+├── .env.example            # Example environment variables
+├── docker-compose.yml      # Main Docker Compose file
+└── README.md               # Project documentation
+```
 
 ## 🎯 Overview
 
@@ -30,6 +61,57 @@ This stack provides a complete AI development environment with:
 - **UI Framework**: OpenWebUI backend for chat interfaces
 
 All services are containerized, networked, and configured to work together seamlessly.
+
+## 🧠 Design Philosophy
+
+The entire infrastructure follows 4 universal layers used in modern AI developer stacks:
+
+### Layer 1 — Orchestration
+
+Handles everything related to:
+
+- Docker services
+- Networking
+- Environment variables
+- Service connections
+
+**Files:**
+- `docker-compose.yml`
+- `.env`
+
+### Layer 2 — Storage (Volumes)
+
+Persisted and local data for:
+
+- Databases
+- Vector stores
+- Graph stores
+- Memory systems
+- App data
+
+This ensures no service stores anything in hidden Docker volumes → everything is visible and easy to back up.
+
+### Layer 3 — Services (Source Code / Apps)
+
+Every external application (Flowise, Langflow, OpenWebUI, Zep, etc.) gets its own folder.
+This allows:
+
+- Full customization
+- Version tracking
+- Local development
+- Hot-reloading
+
+### Layer 4 — Configuration
+
+All config files live here:
+
+- Zep config
+- Qdrant config
+- Flowise config
+- Neo4j config
+- OpenWebUI env
+
+This gives you full transparency over how each service is wired.
 
 ## 🏗️ Architecture
 

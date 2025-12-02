@@ -4,7 +4,7 @@
 OpenWebUI is now configured for local development with full source code access.
 
 ## Repository Location
-- **Path**: `/home/sog/infrastack/ai-dev-stack/services/openwebui-backend`
+- **Path**: `/home/sog/infrastack/nostack/services/openwebui-backend`
 - **Repository**: https://github.com/Imad-Oute/open-webui.git
 
 ## Development Configuration
@@ -37,7 +37,7 @@ Edit files in:
 
 ### 2. Rebuilding After Changes
 ```bash
-cd /home/sog/infrastack/ai-dev-stack
+cd /home/sog/infrastack/nostack
 
 # Rebuild and restart OpenWebUI
 docker compose up -d --build openwebui-backend
@@ -48,7 +48,7 @@ docker compose restart openwebui-backend
 
 ### 3. Viewing Logs
 ```bash
-docker logs ai-openwebui-backend -f
+docker logs nostack-openwebui-backend -f
 ```
 
 ### 4. Accessing the Application
@@ -95,7 +95,7 @@ uvicorn main:app --reload --port 8080
 ### Container Won't Start
 ```bash
 # Check logs
-docker logs ai-openwebui-backend
+docker logs nostack-openwebui-backend
 
 # Rebuild from scratch
 docker compose build --no-cache openwebui-backend
@@ -103,7 +103,7 @@ docker compose up -d openwebui-backend
 ```
 
 ### Database Connection Issues
-- Verify PostgreSQL is running: `docker ps | grep ai-postgres`
+- Verify PostgreSQL is running: `docker ps | grep nostack-postgres`
 - Check connection string in `.env`: `OPENWEBUI_DB_URL`
 
 ### Port Conflicts

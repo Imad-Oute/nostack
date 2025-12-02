@@ -9,7 +9,7 @@ n8n is a powerful, low-code workflow automation platform with over 400 integrati
 ### Database
 - **Type**: PostgreSQL
 - **Database Name**: `n8n`
-- **Connection**: `ai-postgres:5432`
+- **Connection**: `nostack-postgres:5432`
 - **Persistence**: All workflows, credentials, and executions are stored in PostgreSQL
 
 ### Data Storage
@@ -45,7 +45,7 @@ http://localhost:5679
 1. Add a **Schedule Trigger** node
 2. Add a **Postgres** node
 3. Configure connection:
-   - Host: `ai-postgres`
+   - Host: `nostack-postgres`
    - Port: `5432`
    - Database: `n8n` (or any other)
    - User: `postgres`
@@ -58,19 +58,19 @@ http://localhost:5679
 #### Integrate with Flowise
 1. Add **HTTP Request** node
 2. Method: `POST`
-3. URL: `http://ai-flowise:3000/api/v1/prediction/{flowId}`
+3. URL: `http://nostack-flowise:3000/api/v1/prediction/{flowId}`
 4. Body: Your input data
 5. Headers: `Authorization: Bearer {API_KEY}`
 
 #### Integrate with Zep (Memory)
 1. Add **HTTP Request** node
-2. URL: `http://ai-zep:8000/api/v1/sessions/{sessionId}/memory`
+2. URL: `http://nostack-zep:8000/api/v1/sessions/{sessionId}/memory`
 3. Headers: `Authorization: Bearer {ZEP_API_KEY}`
 4. Use for storing/retrieving conversation context
 
 #### Integrate with Qdrant (Vector Store)
 1. Add **HTTP Request** node
-2. URL: `http://ai-qdrant:6333/collections/{collection}/points`
+2. URL: `http://nostack-qdrant:6333/collections/{collection}/points`
 3. Use for semantic search and vector operations
 
 ## Webhook Configuration
@@ -102,7 +102,7 @@ npm install n8n-nodes-{package-name}
 
 Restart n8n to load new nodes:
 ```bash
-docker restart ai-n8n
+docker restart nostack-n8n
 ```
 
 ### Environment Variables in Workflows
@@ -139,7 +139,7 @@ Webhook → Route to Agent (Langflow) → Process → Store in Neo4j → Respond
 
 ### Query n8n Database
 ```bash
-docker exec -it ai-postgres psql -U postgres -d n8n
+docker exec -it nostack-postgres psql -U postgres -d n8n
 ```
 
 ### Common Queries
@@ -163,7 +163,7 @@ LIMIT 10;
 ```bash
 N8N_PORT=5679
 N8N_DB_TYPE=postgresdb
-N8N_DB_POSTGRESDB_HOST=ai-postgres
+N8N_DB_POSTGRESDB_HOST=nostack-postgres
 N8N_DB_POSTGRESDB_PORT=5432
 N8N_DB_POSTGRESDB_DB=n8n
 N8N_DB_POSTGRESDB_USER=postgres
@@ -183,36 +183,36 @@ N8N_BASIC_AUTH_PASSWORD=password
 
 ### Backup Database
 ```bash
-docker exec ai-postgres pg_dump -U postgres n8n > n8n_backup.sql
+docker exec nostack-postgres pg_dump -U postgres n8n > n8n_backup.sql
 ```
 
 ### Restore Database
 ```bash
-docker exec -i ai-postgres psql -U postgres n8n < n8n_backup.sql
+docker exec -i nostack-postgres psql -U postgres n8n < n8n_backup.sql
 ```
 
 ## Troubleshooting
 
 ### Check Logs
 ```bash
-docker logs ai-n8n
-docker logs -f ai-n8n  # Follow logs
+docker logs nostack-n8n
+docker logs -f nostack-n8n  # Follow logs
 ```
 
 ### Restart n8n
 ```bash
-docker restart ai-n8n
+docker restart nostack-n8n
 ```
 
 ### Clear Execution Data
 ```sql
-docker exec -it ai-postgres psql -U postgres -d n8n -c "DELETE FROM execution_entity WHERE finished = true;"
+docker exec -it nostack-postgres psql -U postgres -d n8n -c "DELETE FROM execution_entity WHERE finished = true;"
 ```
 
 ### Reset Webhooks
 If webhooks aren't working:
 1. Check `WEBHOOK_URL` in `.env`
-2. Restart n8n: `docker restart ai-n8n`
+2. Restart n8n: `docker restart nostack-n8n`
 3. Deactivate and reactivate workflow
 
 ## Best Practices

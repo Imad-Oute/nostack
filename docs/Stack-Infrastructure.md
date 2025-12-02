@@ -61,7 +61,7 @@ This gives you full transparency over how each service is wired.
 ## 📁 Full Folder Structure Overview
 
 ```
-ai-dev-stack/
+nostack/
 │
 ├── docker-compose.yml           <-- Layer 1: Orchestration
 ├── .env                         <-- Layer 1: Global environment variables

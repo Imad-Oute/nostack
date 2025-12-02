@@ -9,7 +9,7 @@ Langflow is a visual framework for building multi-agent AI applications and LLM 
 ### Database
 - **Type**: PostgreSQL
 - **Database Name**: `langflow`
-- **Connection**: `ai-postgres:5432`
+- **Connection**: `nostack-postgres:5432`
 
 ### Data Storage
 - **Flows**: Stored in PostgreSQL
@@ -59,7 +59,7 @@ http://localhost:7860
 - **Vector Store Memory**: Semantic memory
 
 #### Vector Stores
-- **Qdrant**: Connect to `http://ai-qdrant:6333`
+- **Qdrant**: Connect to `http://nostack-qdrant:6333`
 - **PostgreSQL**: Use pgvector extension
 - **Chroma**: Local vector store
 
@@ -85,7 +85,7 @@ curl http://localhost:7860/api/v1/flows
 
 ### n8n Integration
 ```
-URL: http://ai-langflow:7860/api/v1/run/{flow_id}
+URL: http://nostack-langflow:7860/api/v1/run/{flow_id}
 Method: POST
 Body: {"inputs": {"input": "{{$json.userMessage}}"}}
 ```
@@ -93,19 +93,19 @@ Body: {"inputs": {"input": "{{$json.userMessage}}"}}
 ### Zep Integration
 1. Add "Zep Memory" component
 2. Configure:
-   - **URL**: `http://ai-zep:8000`
+   - **URL**: `http://nostack-zep:8000`
    - **API Key**: Your Zep API key
 
 ### Qdrant Integration
 1. Add "Qdrant" vector store
-2. URL: `http://ai-qdrant:6333`
+2. URL: `http://nostack-qdrant:6333`
 3. Collection: Your collection name
 
 ## Configuration
 
 ### Environment Variables (`config/langflow.env`)
 ```bash
-LANGFLOW_DATABASE_URL=postgresql://postgres:password@ai-postgres:5432/langflow
+LANGFLOW_DATABASE_URL=postgresql://postgres:password@nostack-postgres:5432/langflow
 LANGFLOW_PORT=7860
 ```
 
@@ -137,19 +137,19 @@ Store API keys securely in Langflow's credential manager.
 
 ### Backup Database
 ```bash
-docker exec ai-postgres pg_dump -U postgres langflow > langflow_backup.sql
+docker exec nostack-postgres pg_dump -U postgres langflow > langflow_backup.sql
 ```
 
 ## Troubleshooting
 
 ### Check Logs
 ```bash
-docker logs ai-langflow
+docker logs nostack-langflow
 ```
 
 ### Restart Service
 ```bash
-docker restart ai-langflow
+docker restart nostack-langflow
 ```
 
 ## Resources

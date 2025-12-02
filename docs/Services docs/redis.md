@@ -22,7 +22,7 @@ Redis is a high-performance, in-memory data structure store used for caching, me
 
 ### 1. Access Redis CLI
 ```bash
-docker exec -it ai-redis redis-cli -a your-password
+docker exec -it nostack-redis redis-cli -a your-password
 ```
 
 ### 2. Access Redis Commander (GUI)
@@ -146,7 +146,7 @@ r.setex('session', 3600, 'data')
 Use the **Redis** node:
 1. Add Redis node
 2. Configure:
-   - **Host**: `ai-redis`
+   - **Host**: `nostack-redis`
    - **Port**: `6379`
    - **Password**: From `.env`
 
@@ -235,13 +235,13 @@ cp data/redis/dump.rdb data/redis/dump_backup_$(date +%Y%m%d).rdb
 ### Restore
 ```bash
 # Stop Redis
-docker stop ai-redis
+docker stop nostack-redis
 
 # Replace dump file
 cp backup.rdb data/redis/dump.rdb
 
 # Start Redis
-docker start ai-redis
+docker start nostack-redis
 ```
 
 ## Performance Tips
@@ -256,22 +256,22 @@ docker start ai-redis
 
 ### Check Logs
 ```bash
-docker logs ai-redis
+docker logs nostack-redis
 ```
 
 ### Restart Redis
 ```bash
-docker restart ai-redis
+docker restart nostack-redis
 ```
 
 ### Clear All Data
 ```bash
-docker exec -it ai-redis redis-cli -a your-password FLUSHALL
+docker exec -it nostack-redis redis-cli -a your-password FLUSHALL
 ```
 
 ### Test Connection
 ```bash
-docker exec -it ai-redis redis-cli -a your-password PING
+docker exec -it nostack-redis redis-cli -a your-password PING
 # Should return: PONG
 ```
 

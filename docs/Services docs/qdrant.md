@@ -104,13 +104,13 @@ curl -X POST http://localhost:6333/collections/my_collection/points/search \
 ### Flowise Integration
 1. Add "Qdrant" vector store node
 2. Configure:
-   - **URL**: `http://ai-qdrant:6333`
+   - **URL**: `http://nostack-qdrant:6333`
    - **Collection**: Your collection name
    - **Embeddings**: Select model (must match collection dimensions)
 
 ### Langflow Integration
 1. Add Qdrant component
-2. Set URL: `http://ai-qdrant:6333`
+2. Set URL: `http://nostack-qdrant:6333`
 3. Configure collection and embeddings
 
 ### Python Integration
@@ -228,12 +228,12 @@ curl -X PUT http://localhost:6333/collections/my_collection/snapshots/upload \
 
 ### Check Logs
 ```bash
-docker logs ai-qdrant
+docker logs nostack-qdrant
 ```
 
 ### Restart Qdrant
 ```bash
-docker restart ai-qdrant
+docker restart nostack-qdrant
 ```
 
 ### Clear Collection

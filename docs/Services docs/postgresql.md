@@ -40,12 +40,12 @@ The stack creates multiple databases for different services:
 
 #### Using psql (CLI)
 ```bash
-docker exec -it ai-postgres psql -U postgres
+docker exec -it nostack-postgres psql -U postgres
 ```
 
 #### Connect to Specific Database
 ```bash
-docker exec -it ai-postgres psql -U postgres -d n8n
+docker exec -it nostack-postgres psql -U postgres -d n8n
 ```
 
 ### 2. Basic SQL Operations
@@ -128,7 +128,7 @@ LIMIT 5;
 ### n8n Integration
 1. Add **Postgres** node
 2. Configure:
-   - **Host**: `ai-postgres`
+   - **Host**: `nostack-postgres`
    - **Port**: `5432`
    - **Database**: Your database name
    - **User**: `postgres`
@@ -184,24 +184,24 @@ ORDER BY pg_database_size(pg_database.datname) DESC;
 
 ### Backup Single Database
 ```bash
-docker exec ai-postgres pg_dump -U postgres n8n > n8n_backup.sql
+docker exec nostack-postgres pg_dump -U postgres n8n > n8n_backup.sql
 ```
 
 ### Backup All Databases
 ```bash
-docker exec ai-postgres pg_dumpall -U postgres > all_databases_backup.sql
+docker exec nostack-postgres pg_dumpall -U postgres > all_databases_backup.sql
 ```
 
 ### Restore Database
 ```bash
-docker exec -i ai-postgres psql -U postgres -d n8n < n8n_backup.sql
+docker exec -i nostack-postgres psql -U postgres -d n8n < n8n_backup.sql
 ```
 
 ### Automated Backup Script
 ```bash
 #!/bin/bash
 DATE=$(date +%Y%m%d_%H%M%S)
-docker exec ai-postgres pg_dumpall -U postgres > backup_$DATE.sql
+docker exec nostack-postgres pg_dumpall -U postgres > backup_$DATE.sql
 ```
 
 ## Performance Optimization
@@ -242,23 +242,23 @@ SELECT * FROM pg_stat_user_tables;
 
 ### Check Logs
 ```bash
-docker logs ai-postgres
+docker logs nostack-postgres
 ```
 
 ### Restart PostgreSQL
 ```bash
-docker restart ai-postgres
+docker restart nostack-postgres
 ```
 
 ### Connection Issues
 Check if PostgreSQL is running:
 ```bash
-docker exec ai-postgres pg_isready -U postgres
+docker exec nostack-postgres pg_isready -U postgres
 ```
 
 ### Reset Password
 ```bash
-docker exec -it ai-postgres psql -U postgres -c "ALTER USER postgres PASSWORD 'new-password';"
+docker exec -it nostack-postgres psql -U postgres -c "ALTER USER postgres PASSWORD 'new-password';"
 ```
 
 ## Security Best Practices

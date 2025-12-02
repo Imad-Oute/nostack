@@ -6,10 +6,10 @@ server:
 database:
   type: postgres
   postgres:
-    dsn: "postgres://postgres:imad.123@ai-postgres:5432/zep?sslmode=disable"
+    dsn: "postgres://postgres:imad.123@nostack-postgres:5432/zep?sslmode=disable"
 
 nlp:
-  server_url: "http://ai-zep-nlp:5555"
+  server_url: "http://nostack-zep-nlp:5555"
 
 memory:
   message_window: 12

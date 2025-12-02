@@ -15,7 +15,7 @@ Zep is a long-term memory service designed for AI assistants and chatbots. It pr
 ### Database
 - **Type**: PostgreSQL with pgvector extension
 - **Database Name**: `zep`
-- **Connection**: `ai-postgres:5432`
+- **Connection**: `nostack-postgres:5432`
 
 ### Architecture
 Zep runs as two containers:
@@ -85,14 +85,14 @@ curl -X POST http://localhost:8000/api/v1/sessions/user-123/search \
 ### n8n Integration
 Use the HTTP Request node to interact with Zep:
 1. Set Method to `POST`
-2. URL: `http://ai-zep:8000/api/v1/sessions/{session_id}/memory`
+2. URL: `http://nostack-zep:8000/api/v1/sessions/{session_id}/memory`
 3. Add Header: `Authorization: Bearer ${ZEP_API_KEY}`
 
 ### Flowise Integration
 Flowise has built-in Zep memory nodes:
 1. Add "Zep Memory" node to your flow
 2. Configure:
-   - Base URL: `http://ai-zep:8000`
+   - Base URL: `http://nostack-zep:8000`
    - API Key: Your Zep API key
    - Session ID: User identifier
 
@@ -109,7 +109,7 @@ Main configuration file for Zep service. Key settings:
 
 ### Environment Variables
 ```bash
-ZEP_DB_HOST=ai-postgres
+ZEP_DB_HOST=nostack-postgres
 ZEP_DB_PORT=5432
 ZEP_DB_USER=postgres
 ZEP_DB_PASS=your-password
@@ -127,12 +127,12 @@ ZEP_PORT=8000
 ### Backup
 To backup Zep data:
 ```bash
-docker exec ai-postgres pg_dump -U postgres zep > zep_backup.sql
+docker exec nostack-postgres pg_dump -U postgres zep > zep_backup.sql
 ```
 
 ### Restore
 ```bash
-docker exec -i ai-postgres psql -U postgres zep < zep_backup.sql
+docker exec -i nostack-postgres psql -U postgres zep < zep_backup.sql
 ```
 
 ## Advanced Features
@@ -150,8 +150,8 @@ Uses pgvector for semantic search across conversation history.
 
 ### Check Zep Logs
 ```bash
-docker logs ai-zep
-docker logs ai-zep-nlp
+docker logs nostack-zep
+docker logs nostack-zep-nlp
 ```
 
 ### Verify NLP Server
@@ -161,7 +161,7 @@ curl http://localhost:5555/healthz
 
 ### Test Database Connection
 ```bash
-docker exec ai-zep psql -h ai-postgres -U postgres -d zep -c "SELECT 1;"
+docker exec nostack-zep psql -h nostack-postgres -U postgres -d zep -c "SELECT 1;"
 ```
 
 ## Resources

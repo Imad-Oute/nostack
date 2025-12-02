@@ -120,7 +120,7 @@ with driver.session() as session:
 ### n8n Integration
 Use HTTP Request node with Cypher queries:
 ```
-URL: http://ai-neo4j:7474/db/neo4j/tx/commit
+URL: http://nostack-neo4j:7474/db/neo4j/tx/commit
 Method: POST
 Headers: Authorization: Basic bmVvNGo6cGFzc3dvcmQxMjM=
 Body: {
@@ -169,12 +169,12 @@ CALL apoc.export.json.all("backup.json", {})
 
 ### Backup Database
 ```bash
-docker exec ai-neo4j neo4j-admin dump --database=neo4j --to=/backups/neo4j.dump
+docker exec nostack-neo4j neo4j-admin dump --database=neo4j --to=/backups/neo4j.dump
 ```
 
 ### Restore
 ```bash
-docker exec ai-neo4j neo4j-admin load --from=/backups/neo4j.dump --database=neo4j --force
+docker exec nostack-neo4j neo4j-admin load --from=/backups/neo4j.dump --database=neo4j --force
 ```
 
 ## Monitoring
@@ -193,13 +193,13 @@ CALL dbms.queryJmx("org.neo4j:*")
 
 ### Check Logs
 ```bash
-docker logs ai-neo4j
+docker logs nostack-neo4j
 cat data/neo4j/logs/neo4j.log
 ```
 
 ### Restart Neo4j
 ```bash
-docker restart ai-neo4j
+docker restart nostack-neo4j
 ```
 
 ### Clear Database

@@ -9,7 +9,7 @@ Flowise is a no/low-code platform for building LLM applications and AI agents. I
 ### Database
 - **Type**: PostgreSQL
 - **Database Name**: `flowise`
-- **Connection**: `ai-postgres:5432`
+- **Connection**: `nostack-postgres:5432`
 - **Purpose**: Stores chatflows, API keys, and configurations
 
 ### Data Storage
@@ -53,14 +53,14 @@ http://localhost:3002
 #### Connect to Qdrant
 1. Add "Qdrant" node
 2. Configure:
-   - **URL**: `http://ai-qdrant:6333`
+   - **URL**: `http://nostack-qdrant:6333`
    - **Collection Name**: Your collection name
    - **Embeddings**: Select embedding model
 
 #### Connect to PostgreSQL (pgvector)
 1. Add "Postgres" vector store node
 2. Configure:
-   - **Host**: `ai-postgres`
+   - **Host**: `nostack-postgres`
    - **Port**: `5432`
    - **Database**: Your database
    - **Table Name**: Your table
@@ -95,7 +95,7 @@ curl -X POST http://localhost:3002/api/v1/prediction/{chatflowId} \
 ### n8n Integration
 Use HTTP Request node:
 ```
-URL: http://ai-flowise:3000/api/v1/prediction/{chatflowId}
+URL: http://nostack-flowise:3000/api/v1/prediction/{chatflowId}
 Method: POST
 Body: {"question": "{{$json.userInput}}"}
 ```
@@ -103,13 +103,13 @@ Body: {"question": "{{$json.userInput}}"}
 ### Zep Memory Integration
 1. Add "Zep Memory" node in Flowise
 2. Configure:
-   - **Base URL**: `http://ai-zep:8000`
+   - **Base URL**: `http://nostack-zep:8000`
    - **API Key**: Your Zep API key
    - **Session ID**: User identifier
 
 ### Qdrant Integration
 1. Add "Qdrant" vector store
-2. URL: `http://ai-qdrant:6333`
+2. URL: `http://nostack-qdrant:6333`
 3. Use for document storage and retrieval
 
 ## Configuration
@@ -129,7 +129,7 @@ FLOWISE_DB_NAME=flowise
   "port": 3000,
   "database": {
     "type": "postgres",
-    "host": "ai-postgres",
+    "host": "nostack-postgres",
     "port": 5432,
     "database": "flowise"
   }
@@ -166,21 +166,21 @@ Combine multiple agents using:
 
 ### Backup Database
 ```bash
-docker exec ai-postgres pg_dump -U postgres flowise > flowise_backup.sql
+docker exec nostack-postgres pg_dump -U postgres flowise > flowise_backup.sql
 ```
 
 ## Troubleshooting
 
 ### Check Logs
 ```bash
-docker logs ai-flowise
-docker logs -f ai-flowise
+docker logs nostack-flowise
+docker logs -f nostack-flowise
 ```
 
 ### Clear Cache
 ```bash
-docker exec ai-flowise rm -rf /root/.flowise/cache
-docker restart ai-flowise
+docker exec nostack-flowise rm -rf /root/.flowise/cache
+docker restart nostack-flowise
 ```
 
 ### Database Connection Issues

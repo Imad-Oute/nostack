@@ -27,7 +27,7 @@ We have included a setup script to get you up and running in seconds.
 1.  **Clone the repository**:
     ```bash
     git clone <your-repo-url>
-    cd ai-dev-stack
+    cd nostack
     ```
 
 2.  **Configure Environment**:
@@ -48,7 +48,7 @@ We have included a setup script to get you up and running in seconds.
 1.  **Clone the repository**:
     ```bash
     git clone <your-repo-url>
-    cd ai-dev-stack
+    cd nostack
     ```
 
 2.  **Configure Environment**:
@@ -83,7 +83,7 @@ Once the stack is running, you can access the services at the following URLs:
 ## 📂 Folder Structure
 
 ```
-ai-dev-stack/
+nostack/
 ├── config/                 # Configuration files for services
 │   ├── init-db.sh          # Database initialization script
 │   ├── langflow.env        # Langflow environment variables
@@ -163,7 +163,7 @@ The stack automatically creates the following databases:
 
 ```bash
 # Using Docker
-docker exec -it ai-postgres psql -U postgres -d maindb
+docker exec -it nostack-postgres psql -U postgres -d maindb
 
 # Using external client
 psql -h localhost -p 5435 -U postgres -d maindb
@@ -177,7 +177,7 @@ The OpenWebUI backend is configured for development with live code reloading. So
 
 ```bash
 # View logs
-docker logs -f ai-openwebui-backend
+docker logs -f nostack-openwebui-backend
 
 # Restart after config changes
 docker compose restart openwebui-backend
@@ -190,8 +190,8 @@ See [docs/openwebui-development.md](docs/openwebui-development.md) for more deta
 ### Common Issues
 
 -   **Port Conflicts**: If ports are in use, change them in `.env`.
--   **Service Won't Start**: Check logs with `docker logs ai-<service-name>`.
--   **Database Issues**: Verify PostgreSQL health with `docker exec ai-postgres pg_isready -U postgres`.
+-   **Service Won't Start**: Check logs with `docker logs nostack-<service-name>`.
+-   **Database Issues**: Verify PostgreSQL health with `docker exec nostack-postgres pg_isready -U postgres`.
 
 ### Reset Everything
 

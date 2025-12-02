@@ -4,7 +4,7 @@ Langflow is a visual flow builder for LangChain applications.
 
 ## Access
 - **URL**: http://localhost:7860
-- **Container**: `ai-langflow`
+- **Container**: `nostack-langflow`
 
 ## Features
 - Visual flow builder for LangChain

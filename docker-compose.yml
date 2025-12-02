@@ -1,0 +1,237 @@
+version: '3.8'
+
+networks:
+  ai-network:
+    driver: bridge
+
+services:
+  # ---------------------------------------------------------------------------
+  # Layer 2: Data Layer (Databases & Cache)
+  # ---------------------------------------------------------------------------
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ai-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_MAIN}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      # Init scripts to create multiple databases
+      - ./config/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - ai-network
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ai-redis
+    restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - ai-network
+    ports:
+      - "${REDIS_PORT}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: ai-redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:ai-redis:6379:0:redis.123
+    networks:
+      - ai-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: ai-qdrant
+    restart: always
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+      - ./config/qdrant.yml:/qdrant/config/production.yaml
+    networks:
+      - ai-network
+    ports:
+      - "${QDRANT_PORT}:6333"
+
+  neo4j:
+    image: neo4j:5.12
+    container_name: ai-neo4j
+    restart: always
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH}
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./config/neo4j.conf:/conf/neo4j.conf
+    networks:
+      - ai-network
+    ports:
+      - "${NEO4J_HTTP_PORT}:7474"
+      - "${NEO4J_BOLT_PORT}:7687"
+
+  langflow:
+    image: langflowai/langflow:latest
+    container_name: ai-langflow
+    restart: always
+    env_file:
+      - ./config/langflow.env
+    environment:
+      - LANGFLOW_DATABASE_URL=postgresql://postgres:imad.123@ai-postgres:5432/langflow
+    volumes:
+      - ./data/langflow:/app/langflow
+    networks:
+      - ai-network
+    ports:
+      - "${LANGFLOW_PORT}:7860"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Layer 3: Application Services
+  # ---------------------------------------------------------------------------
+
+  zep-nlp:
+    image: ghcr.io/getzep/zep-nlp-server:latest
+    container_name: ai-zep-nlp
+    restart: always
+    environment:
+      - ZEP_NLP_MODEL=sentence-transformers/all-MiniLM-L6-v2
+    volumes:
+      - ./data/zep-nlp:/app/cache
+    networks:
+      - ai-network
+    ports:
+      - "5555:5555"
+
+  zep:
+    image: ghcr.io/getzep/zep:latest
+    container_name: ai-zep
+    restart: always
+    environment:
+      ZEP_DB_HOST: ai-postgres
+      ZEP_DB_PORT: ${ZEP_DB_PORT}
+      ZEP_DB_USER: ${ZEP_DB_USER}
+      ZEP_DB_PASS: ${ZEP_DB_PASS}
+      ZEP_DB_NAME: ${ZEP_DB_NAME}
+      ZEP_API_KEY: ${ZEP_API_KEY}
+      ZEP_OPENAI_API_KEY: "placeholder" # Required even with local embeddings
+    volumes:
+      - ./config/zep.yaml:/app/config.yaml
+    networks:
+      - ai-network
+    ports:
+      - "${ZEP_PORT}:${ZEP_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      zep-nlp:
+        condition: service_started
+
+  flowise:
+    image: flowiseai/flowise:latest
+    container_name: ai-flowise
+    restart: always
+    environment:
+      PORT: 3000
+      DATABASE_TYPE: postgres
+      DATABASE_HOST: ai-postgres
+      DATABASE_PORT: ${FLOWISE_DB_PORT}
+      DATABASE_USER: ${FLOWISE_DB_USER}
+      DATABASE_PASSWORD: ${FLOWISE_DB_PASSWORD}
+      DATABASE_NAME: ${FLOWISE_DB_NAME}
+      APIKEY_PATH: /root/.flowise
+      SECRET: flowise-secret-key
+      LOG_LEVEL: info
+    volumes:
+      - ./data/flowise:/root/.flowise
+      - ./config/flowise.json:/root/.flowise/config.json
+    networks:
+      - ai-network
+    ports:
+      - "${FLOWISE_PORT}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: ai-n8n
+    restart: always
+    environment:
+      - N8N_PORT=${N8N_PORT}
+      - DB_TYPE=${N8N_DB_TYPE}
+      - DB_POSTGRESDB_HOST=ai-postgres
+      - DB_POSTGRESDB_PORT=${N8N_DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${N8N_DB_POSTGRESDB_DB}
+      - DB_POSTGRESDB_USER=${N8N_DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${N8N_DB_POSTGRESDB_PASSWORD}
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      # --- ADD NGROK CONFIGURATION HERE ---
+      - N8N_EDITOR_BASE_URL=https://stutteringly-unneat-delcie.ngrok-free.dev
+      - WEBHOOK_URL=https://stutteringly-unneat-delcie.ngrok-free.dev
+      - N8N_EXPRESS_TRUST_PROXY=true
+    volumes:
+      - ./data/n8n:/home/node/.n8n
+    networks:
+      - ai-network
+    ports:
+      - "${N8N_PORT}:${N8N_PORT}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  openwebui-backend:
+    build:
+      context: ./services/openwebui-backend
+      dockerfile: Dockerfile
+    container_name: ai-openwebui-backend
+    restart: always
+    env_file:
+      - ./config/openwebui.env
+    environment:
+      - DATABASE_URL=${OPENWEBUI_DB_URL}
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
+      - ENV=dev
+      - QDRANT_URI=http://ai-qdrant:6333
+    volumes:
+      - ./postgres-data/openwebui:/app/backend/data
+      # Mount source code for development
+      - ./services/openwebui-backend/backend:/app/backend
+      - ./services/openwebui-backend/src:/app/src
+    networks:
+      - ai-network
+    ports:
+      - "${OPENWEBUI_PORT}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+      zep:
+        condition: service_started

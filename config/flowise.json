@@ -1,0 +1,14 @@
+{
+    "PORT": 3002,
+    "DATABASE_TYPE": "postgres",
+    "DATABASE_HOST": "ai-postgres",
+    "DATABASE_PORT": 5432,
+    "DATABASE_USER": "admin",
+    "DATABASE_PASSWORD": "admin123",
+    "DATABASE_NAME": "flowise",
+    "APIKEY_PATH": "/root/.flowise",
+    "SECRET": "flowise-secret-key",
+    "LOG_LEVEL": "info",
+    "VECTOR_STORE": "qdrant",
+    "QDRANT_SERVER_URL": "http://ai-qdrant:6333"
+}

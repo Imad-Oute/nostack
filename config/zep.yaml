@@ -1,0 +1,29 @@
+development: false
+server:
+  port: 8002
+  web_enabled: true
+
+database:
+  type: postgres
+  postgres:
+    dsn: "postgres://postgres:imad.123@ai-postgres:5432/zep?sslmode=disable"
+
+nlp:
+  server_url: "http://ai-zep-nlp:5555"
+
+memory:
+  message_window: 12
+
+extractors:
+  messages:
+    summarizer:
+      enabled: true
+    embeddings:
+      enabled: true
+      service: "local" # Changed from "openai" to "local" for free usage
+      dimensions: 384 # Standard for many local models (e.g. all-MiniLM-L6-v2)
+
+store:
+  type: "postgres"
+  postgres:
+    dsn: "postgres://postgres:imad.123@ai-postgres:5432/zep?sslmode=disable"

@@ -174,7 +174,7 @@ curl http://localhost:5679/  # n8n
 |---------|-----|---------------------|
 | **Langflow** | http://localhost:7860 | Create account on first visit |
 | **Flowise** | http://localhost:3002 | No authentication by default |
-| **n8n** | http://localhost:5679 | User: `admin`, Pass: `admin123` |
+| **n8n** | http://localhost:5679 | Create account on first visit |
 | **OpenWebUI** | http://localhost:3005 | Create account on first visit |
 | **Neo4j Browser** | http://localhost:7475 | User: `neo4j`, Pass: `password123` |
 | **Redis Commander** | http://localhost:8081 | No authentication |
@@ -183,7 +183,7 @@ curl http://localhost:5679/  # n8n
 ### API Endpoints
 
 - **Zep API**: http://localhost:8002
-- **Qdrant API**: http://localhost:6334
+- **Qdrant API**: http://localhost:6334/dashboard
 
 ### Database Connections
 
@@ -430,12 +430,6 @@ This stack integrates the following open-source projects:
 - [Neo4j](https://neo4j.com/) - Graph database
 - [PostgreSQL](https://www.postgresql.org/) - Relational database
 - [Redis](https://redis.io/) - Cache and message broker
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-repo/discussions)
-- **Documentation**: [Wiki](https://github.com/your-repo/wiki)
 
 ---
 

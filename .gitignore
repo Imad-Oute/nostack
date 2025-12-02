@@ -24,6 +24,11 @@ postgres-data/*
 # But keep the directories themselves (and .gitkeep files)
 !data/**/.gitkeep
 !postgres-data/.gitkeep
+
+# OpenWebUI Backend (cloned by setup.py)
+services/openwebui-backend/*
+!services/openwebui-backend/README.md
+
 *.db
 *.sqlite
 *.sqlite3

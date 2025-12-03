@@ -26,4 +26,4 @@ extractors:
 store:
   type: "postgres"
   postgres:
-    dsn: "postgres://postgres:imad.123@ai-postgres:5432/zep?sslmode=disable"
+    dsn: "postgres://postgres:imad.123@nostack-postgres:5432/zep?sslmode=disable"

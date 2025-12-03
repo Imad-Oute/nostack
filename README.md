@@ -2,7 +2,7 @@
   <img src="docs/logo.png" alt="logo" width="100" height="auto" />
 </div>
 
-# 🚀 NoStack: AI Development Stack
+# <img src="docs/logo.png" alt="logo" width="40" height="auto" /> NoStack: AI Development Stack
 
 A comprehensive, production-ready Docker-based development stack for building AI-powered applications. This stack integrates multiple AI/ML tools, workflow automation, vector databases, and memory systems into a unified development environment.
 
